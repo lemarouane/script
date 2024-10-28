@@ -98,21 +98,26 @@ document.addEventListener('DOMContentLoaded', function() {
         j.src = 'https://aichatbot.sendbird.com/index.js';
         f.parentNode.insertBefore(j, f);
 
-        function changePlaceholder() {
+        function setPlaceholder() {
           const placeholder = d.querySelector('.sendbird-message-input--placeholder');
-          if (placeholder && placeholder.textContent !== ':bulb: Aide-toi, pose une question à TutoBot ! :blush:') {
-            placeholder.textContent = ':bulb: Aide-toi, pose une question à TutoBot ! :blush:';
+          if (placeholder) {
+            placeholder.textContent = '💡Aide-toi, pose tes questions à TutoBot ! 📚';
           }
         }
 
         j.onload = function() {
-          changePlaceholder();
+          setPlaceholder();
+
+          // Observe changes in the input area to keep setting the desired placeholder
           const targetNode = d.querySelector('.sendbird-message-input');
           if (targetNode) {
-            const observer = new MutationObserver(changePlaceholder);
+            const observer = new MutationObserver(setPlaceholder);
             observer.observe(targetNode, { childList: true, subtree: true });
           }
         };
+
+        // Set the placeholder at regular intervals as a fallback
+        setInterval(setPlaceholder, 2000);
       })(window, document, 'script', '02DCCFFE-A4D6-4758-BABC-19FA4BD0CE6C', 'onboarding_bot', {
         apiHost: 'https://api-cf-eu-1.sendbird.com',
       });
@@ -121,8 +126,4 @@ document.addEventListener('DOMContentLoaded', function() {
     }
   }
 });
-
-
-
 </script>
-
