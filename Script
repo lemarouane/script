@@ -1,0 +1,128 @@
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+  const currentURL = window.location.href;
+
+  // Check if it's the specific URL for the first part
+  if (currentURL === 'https://cours.tutorax.com/') {
+    try {
+      const chatbotButton = document.createElement('button');
+      chatbotButton.id = 'openChatbotButton';
+      chatbotButton.textContent = '🚀Découvre ton assistant virtuel ! Clique ici pour commencer !🌟';
+      chatbotButton.style.padding = '15px 20px';
+      chatbotButton.style.backgroundColor = '#0073E6';
+      chatbotButton.style.color = 'white';
+      chatbotButton.style.border = 'none';
+      chatbotButton.style.borderRadius = '40px';
+      chatbotButton.style.cursor = 'pointer';
+      chatbotButton.style.position = 'fixed';
+      chatbotButton.style.zIndex = '1000';
+
+      document.body.appendChild(chatbotButton);
+
+      const style = document.createElement('style');
+      style.innerHTML = `
+        #openChatbotButton {
+          top: 75%;
+          left: 50%;
+          transform: translate(-50%, -50%);
+          font-size: 16px;
+        }
+        @media (max-width: 1024px) and (min-width: 768px) {
+          #openChatbotButton {
+            top: 80%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            padding: 15px 30px;
+            font-size: 16px;
+          }
+        }
+        @media (max-width: 768px) {
+          #openChatbotButton {
+            top: auto;
+            bottom: 100px;
+            left: 50%;
+            transform: translateX(-50%);
+            padding: 15px 30px;
+            font-size: 16px;
+            width: auto;
+            max-width: 300px;
+          }
+        }
+        @media (max-width: 480px) {
+          #openChatbotButton {
+            bottom: 48px;
+            padding: 12px 24px;
+            font-size: 14px;
+            width: 90%;
+            max-width: 280px;
+          }
+        }
+      `;
+      document.head.appendChild(style);
+
+      chatbotButton.onclick = function() {
+        window.open('https://aichatbot.sendbird.com/playground/index.html?app_id=02DCCFFE-A4D6-4758-BABC-19FA4BD0CE6C&bot_id=onboarding_bot&region=eu-1', '_blank');
+      };
+    } catch (error) {
+      console.error('Failed to load chatbot button:', error);
+    }
+  }
+
+  // Check if the current URL matches any of the patterns for the second part
+  const urlPatterns = [
+    "/course/view.php?id=74"
+  ];
+  const shouldInjectChatbot = urlPatterns.some(pattern => currentURL.includes(pattern));
+
+  if (shouldInjectChatbot && !document.getElementById('aichatbot')) {
+    try {
+      (function(w, d, s, ...args) {
+        const style = d.createElement('style');
+        style.innerHTML = `
+          .sc-jaXxmE.heKXtN {
+            display: none !important;
+          }
+        `;
+        d.head.appendChild(style);
+
+        const div = d.createElement('div');
+        div.id = 'aichatbot';
+        d.body.appendChild(div);
+
+        w.chatbotConfig = args;
+
+        const f = d.getElementsByTagName(s)[0];
+        const j = d.createElement(s);
+        j.async = true;
+        j.type = 'module';
+        j.src = 'https://aichatbot.sendbird.com/index.js';
+        f.parentNode.insertBefore(j, f);
+
+        function changePlaceholder() {
+          const placeholder = d.querySelector('.sendbird-message-input--placeholder');
+          if (placeholder && placeholder.textContent !== ':bulb: Aide-toi, pose une question à TutoBot ! :blush:') {
+            placeholder.textContent = ':bulb: Aide-toi, pose une question à TutoBot ! :blush:';
+          }
+        }
+
+        j.onload = function() {
+          changePlaceholder();
+          const targetNode = d.querySelector('.sendbird-message-input');
+          if (targetNode) {
+            const observer = new MutationObserver(changePlaceholder);
+            observer.observe(targetNode, { childList: true, subtree: true });
+          }
+        };
+      })(window, document, 'script', '02DCCFFE-A4D6-4758-BABC-19FA4BD0CE6C', 'onboarding_bot', {
+        apiHost: 'https://api-cf-eu-1.sendbird.com',
+      });
+    } catch (error) {
+      console.error('Failed to load AI Chatbot:', error);
+    }
+  }
+});
+
+
+
+</script>
+
